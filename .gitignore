@@ -1,0 +1,13 @@
+#docker volumes
+html
+cgi-bin/*
+docker/db/
+docker/mailhog/
+
+#setting files
+.env
+
+#large size files
+*.zip
+*.mov
+*.mp4
