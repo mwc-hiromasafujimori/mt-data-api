@@ -1,10 +1,14 @@
-import { Client } from "./mt-data-api-sdk.ts";
+import { Client } from './mt-data-api-sdk/mod.ts';
 
-const clientId = "node"; // なんでもいい
-const baseURL = "http://localhost:8080/mt/mt-data-api.cgi/v6/"; // v6が最新
-const username = "user"; // ログインユーザーの名前
-const password = "l1wyqqjw"; // Webサービスパスワード
+const clientId = 'node';
+const baseURL = 'http://localhost:8080/mt/mt-data-api.cgi/v6/';
+const username = 'user';
+// const password = "l1wyqqjwa";
+const password = 'l1wyqqjw';
 
-const webServicePassClient = new Client(clientId, baseURL, username, password);
+const client = new Client(clientId, baseURL, username, password);
 
-webServicePassClient.authentication();
+await client.createAccessToken();
+
+// await client.createContentTypeDataInMyFirstSite();
+await client.fetchContentTypeDataInMyFirstSite();
