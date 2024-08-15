@@ -1,5 +1,5 @@
 import { authentication } from './authentication.ts';
-import { createContentData, fetchSingleContentData } from './contentType.ts';
+import { createContentData, fetchSingleContentData } from './contentData.ts';
 
 export class Client {
 	private clientId: string;
@@ -70,9 +70,6 @@ export class Client {
 	}
 
 	async fetchContentTypeDataInMyFirstSite() {
-		await fetchSingleContentData(this.baseURL, 1, 1, 1, this.token, [
-			'Title',
-			'Body',
-		]);
+		await fetchSingleContentData(this.baseURL, 1, 1, 1, this.token);
 	}
 }

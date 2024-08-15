@@ -89,6 +89,9 @@ export const createContentData = async (
 
 /**
  * コンテンツデータを一つ取得する
+ *
+ * @param fields string[] よくわかんないけど使えない
+ *
  * @see https://movabletype.github.io/mt-docs-data-api-reference/v6.html#tag/Content-Types/paths/~1sites~1%7Bsite_id%7D~1contentTypes~1%7Bcontent_type_id%7D~1data~1%7Bcontent_data_id%7D/get
  * @throws 400 Bad request
  * @throws 401 Invalid login
@@ -107,10 +110,7 @@ export const fetchSingleContentData = async (
 		`sites/${site_id}/contentTypes/${content_type_id}/data/${content_data_id}`;
 	const requestBody = new URLSearchParams();
 
-	if (fields) {
-		requestBody.set('fields', fields.join(','));
-	}
-	const requestURL = new URL(baseURL + endpoint + '?' + 'fields=1');
+	const requestURL = new URL(baseURL + endpoint);
 	console.log(requestURL);
 
 	const response = await fetch(requestURL, {
