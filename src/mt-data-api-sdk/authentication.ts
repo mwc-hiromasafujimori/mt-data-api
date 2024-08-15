@@ -1,4 +1,5 @@
-import { type MTDataApiError } from './error.ts';
+import { type MTDataApiError } from './utils/error.ts';
+import { createHeader } from './utils/header.ts';
 
 type AuthenticationSuccess = {
 	accessToken: string;
@@ -29,15 +30,13 @@ export const authentication = async (
 
 	const response = await fetch(requestURL, {
 		method: 'POST',
-		headers: {
-			'Content-Type': 'application/x-www-form-urlencoded',
-		},
+		headers: createHeader(),
 		body: requestBody,
 	});
 
 	if (response.status === 200) {
 		const json: AuthenticationSuccess = await response.json();
-		console.log(`Success Authentication`);
+		console.log(`Success Authentication: ${json.accessToken.slice(0, 5)}...`);
 
 		return json;
 	}

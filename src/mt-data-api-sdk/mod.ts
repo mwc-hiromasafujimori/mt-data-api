@@ -1,3 +1,4 @@
+import { uploadFile } from './assets.ts';
 import { authentication } from './authentication.ts';
 import { createContentData, fetchSingleContentData } from './contentData.ts';
 
@@ -70,6 +71,31 @@ export class Client {
 	}
 
 	async fetchContentTypeDataInMyFirstSite() {
-		await fetchSingleContentData(this.baseURL, 1, 1, 1, this.token);
+		const [site_id, content_type_id, content_data_id] = [1, 1, 2];
+		await fetchSingleContentData(
+			this.baseURL,
+			site_id,
+			content_type_id,
+			content_data_id,
+			this.token,
+		);
+	}
+
+	async uploadFileInMyFirstSite() {
+		const [site_id] = [1];
+
+		// get local image
+		// const file = await Deno.readFile('../../image.png');
+		// const blob = file.toString();
+
+		// get remote image
+		const file = await fetch('https://placehold.jp/192x108.png');
+		const blob = await file.blob();
+
+		const body = {
+			path: 'assets',
+			file: blob,
+		};
+		await uploadFile(this.baseURL, site_id, this.token, body);
 	}
 }

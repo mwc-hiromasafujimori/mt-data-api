@@ -1,4 +1,5 @@
-import { type MTDataApiError } from './error.ts';
+import { type MTDataApiError } from './utils/error.ts';
+import { createAuthorizedHeader } from './utils/header.ts';
 
 type ContentDataSuccess = {
 	author: {
@@ -68,10 +69,7 @@ export const createContentData = async (
 
 	const response = await fetch(requestURL, {
 		method: 'POST',
-		headers: {
-			'Content-Type': 'application/x-www-form-urlencoded',
-			'X-MT-Authorization': 'MTAuth accessToken=' + token,
-		},
+		headers: createAuthorizedHeader(token),
 		body: requestBody,
 	});
 
@@ -89,6 +87,7 @@ export const createContentData = async (
 
 /**
  * コンテンツデータを一つ取得する
+ * Draftはとれないっぽい
  *
  * @param fields string[] よくわかんないけど使えない
  *
@@ -108,23 +107,17 @@ export const fetchSingleContentData = async (
 ) => {
 	const endpoint =
 		`sites/${site_id}/contentTypes/${content_type_id}/data/${content_data_id}`;
-	const requestBody = new URLSearchParams();
-
 	const requestURL = new URL(baseURL + endpoint);
-	console.log(requestURL);
 
 	const response = await fetch(requestURL, {
 		method: 'GET',
-		headers: {
-			'Content-Type': 'application/x-www-form-urlencoded',
-			'X-MT-Authorization': 'MTAuth accessToken=' + token,
-		},
+		headers: createAuthorizedHeader(token),
 	});
 
 	if (response.status === 200) {
 		const json: ContentDataSuccess = await response.json();
 		console.log(`Success fetch data`);
-		console.log(JSON.stringify(json));
+		console.log(json);
 
 		return json;
 	}

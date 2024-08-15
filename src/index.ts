@@ -11,4 +11,6 @@ const client = new Client(clientId, baseURL, username, password);
 await client.createAccessToken();
 
 // await client.createContentTypeDataInMyFirstSite();
-await client.fetchContentTypeDataInMyFirstSite();
+// await client.fetchContentTypeDataInMyFirstSite();
+
+await client.uploadFileInMyFirstSite();
