@@ -1,5 +1,5 @@
 import { type MTDataApiError } from './utils/error.ts';
-import { createAuthorizedHeader } from './utils/header.ts';
+import { authorizedHeader } from './utils/header.ts';
 
 type UploadSuccess = {
 	blog: {
@@ -54,11 +54,24 @@ type UploadFileBody = {
 	autoRenameNonAscii?: 0 | 1;
 	/**binary */
 	file: Blob;
+	filename?: string;
 	normalizeOrientation?: 0 | 1;
 	path?: string;
 	// site_id: number;
 };
 
+/**
+ * アセットアップロード
+ *
+ * @see https://movabletype.github.io/mt-docs-data-api-reference/v6.html#tag/Assets/paths/~1assets~1upload/post
+ *
+ * @throws 400 Bad request
+ * @throws 401 Invalid login
+ * @throws 403 Do not have permission to upload.
+ * @throws 404 Site not found.
+ * @throws 409 Uploaded file already exists.
+ * @throws 413 Upload file size is larger than CGIMaxUpload.
+ */
 export const uploadFile = async (
 	baseURL: string,
 	site_id: number,
@@ -77,14 +90,14 @@ export const uploadFile = async (
 	);
 	const requestBody = new FormData();
 	requestBody.set('site_id', `${site_id}`);
-	requestBody.set('file', body.file);
+	requestBody.set('file', body.file, body.filename);
 	if (body.path) {
 		requestBody.set('path', body.path);
 	}
 
 	const response = await fetch(requestURL, {
 		method: 'POST',
-		headers: createAuthorizedHeader(token, 'multipart/form-data'),
+		headers: authorizedHeader(token, 'multipart/form-data'),
 		body: requestBody,
 	});
 

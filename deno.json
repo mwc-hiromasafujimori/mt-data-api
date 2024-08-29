@@ -4,11 +4,16 @@
 		"exclude": ["src/testdata/", "src/fixtures/**/*.ts"],
 		"rules": {
 			"tags": ["recommended"],
-			"include": ["ban-untagged-todo"],
-			"exclude": ["no-unused-vars"]
+			"include": [
+				"camelcase",
+				"default-param-last",
+				"eqeqeq",
+				"guard-for-in",
+				"no-self-compare"
+			],
+			"exclude": []
 		}
 	},
-
 	"fmt": {
 		"useTabs": true,
 		"lineWidth": 80,

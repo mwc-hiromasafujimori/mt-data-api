@@ -1,5 +1,5 @@
 import { type MTDataApiError } from './utils/error.ts';
-import { createHeader } from './utils/header.ts';
+import { unauthorizedHeader } from './utils/header.ts';
 
 type AuthenticationSuccess = {
 	accessToken: string;
@@ -30,7 +30,7 @@ export const authentication = async (
 
 	const response = await fetch(requestURL, {
 		method: 'POST',
-		headers: createHeader(),
+		headers: unauthorizedHeader(),
 		body: requestBody,
 	});
 

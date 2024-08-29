@@ -1,14 +1,14 @@
 type ContentType = 'application/x-www-form-urlencoded' | 'multipart/form-data';
 
-export const createHeader = (
+export const unauthorizedHeader = (
 	contentType: ContentType = 'application/x-www-form-urlencoded',
 ): HeadersInit => {
 	return {
-		'Content-Type': 'application/x-www-form-urlencoded',
+		'Content-Type': contentType,
 	};
 };
 
-export const createAuthorizedHeader = (
+export const authorizedHeader = (
 	token: string,
 	contentType: ContentType = 'application/x-www-form-urlencoded',
 ): HeadersInit => {

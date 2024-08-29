@@ -71,31 +71,33 @@ export class Client {
 	}
 
 	async fetchContentTypeDataInMyFirstSite() {
-		const [site_id, content_type_id, content_data_id] = [1, 1, 2];
+		const [siteId, contentTypeId, contentDataId] = [1, 1, 2];
 		await fetchSingleContentData(
 			this.baseURL,
-			site_id,
-			content_type_id,
-			content_data_id,
+			siteId,
+			contentTypeId,
+			contentDataId,
 			this.token,
 		);
 	}
 
 	async uploadFileInMyFirstSite() {
-		const [site_id] = [1];
+		const [siteId] = [1];
 
 		// get local image
-		// const file = await Deno.readFile('../../image.png');
-		// const blob = file.toString();
+		const filepath = new URL('./image.png', import.meta.url);
+		const file = await Deno.readFile(filepath);
+		const blob = new Blob([file]);
 
 		// get remote image
-		const file = await fetch('https://placehold.jp/192x108.png');
-		const blob = await file.blob();
+		// const file = await fetch('https://placehold.jp/192x108.png');
+		// const blob = await file.blob();
 
 		const body = {
 			path: 'assets',
 			file: blob,
+			filename: 'image.png',
 		};
-		await uploadFile(this.baseURL, site_id, this.token, body);
+		await uploadFile(this.baseURL, siteId, this.token, body);
 	}
 }

@@ -1,5 +1,5 @@
 import { type MTDataApiError } from './utils/error.ts';
-import { createAuthorizedHeader } from './utils/header.ts';
+import { authorizedHeader } from './utils/header.ts';
 
 type ContentDataSuccess = {
 	author: {
@@ -69,7 +69,7 @@ export const createContentData = async (
 
 	const response = await fetch(requestURL, {
 		method: 'POST',
-		headers: createAuthorizedHeader(token),
+		headers: authorizedHeader(token),
 		body: requestBody,
 	});
 
@@ -103,7 +103,7 @@ export const fetchSingleContentData = async (
 	content_type_id: number,
 	content_data_id: number,
 	token: string,
-	fields?: string[],
+	_fields?: string[],
 ) => {
 	const endpoint =
 		`sites/${site_id}/contentTypes/${content_type_id}/data/${content_data_id}`;
@@ -111,7 +111,7 @@ export const fetchSingleContentData = async (
 
 	const response = await fetch(requestURL, {
 		method: 'GET',
-		headers: createAuthorizedHeader(token),
+		headers: authorizedHeader(token),
 	});
 
 	if (response.status === 200) {
