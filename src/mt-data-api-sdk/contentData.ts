@@ -29,7 +29,7 @@ type ContentDataSuccess = {
 	updatable: boolean;
 };
 
-type CreateContentDataBody = {
+export type CreateContentDataBody = {
 	basename?: string;
 	data: {
 		data: string | string[];

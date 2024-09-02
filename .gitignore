@@ -1,11 +1,8 @@
 #docker volumes
 html
-cgi-bin/*
-docker/db/
-docker/mailhog/
-
-#setting files
-.env
+cgi-bin
+docker/db/data/
+docker/mail/tmp
 
 #large size files
 *.zip

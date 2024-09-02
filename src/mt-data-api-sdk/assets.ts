@@ -49,7 +49,7 @@ type UploadSuccess = {
 	url: string;
 };
 
-type UploadFileBody = {
+export type UploadFileBody = {
 	autoRenameIfExists?: 0 | 1;
 	autoRenameNonAscii?: 0 | 1;
 	/**binary */

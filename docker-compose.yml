@@ -2,37 +2,35 @@ version: "3"
 
 services:
   web:
-    container_name: ${WEB_CONTAINER_NAME}
+    container_name: web
     build:
-      context: ./docker/web/${WEB_CONTAINER_OS}
+      context: ./docker/web/debian
     ports:
       - 8080:80
     volumes:
       - ./html:/var/www/html:rw
       - ./cgi-bin:/var/www/cgi-bin:rw
+    depends_on:
+      - db
+
   db:
-    container_name: ${MYSQL_CONTAINER_NAME}
+    container_name: mysql
     image: mysql:8.0
-    environment:
-      MYSQL_ALLOW_EMPTY_PASSWORD: ${MYSQL_ALLOW_EMPTY_PASSWORD}
-      MYSQL_USER: ${MYSQL_USER}
-      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
-      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
-      MYSQL_DATABASE: ${MYSQL_DATABASE}
-    ports:
-      - ${MYSQL_PORT}:${MYSQL_PORT}
+    env_file:
+      - ./docker/db/db.env
+    expose:
+      - 3306
     volumes:
       - ./docker/db/data:/var/lib/mysql
-    command: mysqld --character-set-server=UTF8MB4 --collation-server=utf8mb4_unicode_ci
+
   mail:
-    container_name: ${MAIL_CONTAINER_NAME}
+    container_name: mailhog
     image: mailhog/mailhog
     ports:
-      - ${MAIL_HTTP_PORT}:${MAIL_HTTP_PORT}
+      - 8025:8025
     expose:
-      - ${MAIL_SMTP_PORT}
-    environment:
-      MH_STORAGE: ${MH_STORAGE}
-      MH_MAILDIR_PATH: ${MH_MAILDIR_PATH}
+      - 1025
+    env_file:
+      - ./docker/mail/mail.env
     volumes:
-      - ./docker/mailhog/:${MH_MAILDIR_PATH}:rw
+      - ./docker/mail/tmp:/tmp:rw
