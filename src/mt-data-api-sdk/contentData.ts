@@ -1,3 +1,4 @@
+import { Client } from './mod.ts';
 import { type MTDataApiError } from './utils/error.ts';
 import { authorizedHeader } from './utils/header.ts';
 
@@ -55,14 +56,14 @@ export type CreateContentDataBody = {
  * @throws 404 Site or Content_type not found.
  */
 export const createContentData = async (
-	baseURL: string,
+	client: Client,
 	site_id: number,
 	content_type_id: number,
-	token: string,
 	body: CreateContentDataBody,
 ): Promise<ContentDataSuccess> => {
+	const token = await client.createAccessToken();
 	const endpoint = `sites/${site_id}/contentTypes/${content_type_id}/data`;
-	const requestURL = new URL(baseURL + endpoint);
+	const requestURL = new URL(client.baseURL + endpoint);
 	const requestBody = new URLSearchParams();
 
 	requestBody.set('content_data', JSON.stringify(body));
@@ -98,16 +99,16 @@ export const createContentData = async (
  * @throws 404 Site or Content_type or Content_data not found
  */
 export const fetchSingleContentData = async (
-	baseURL: string,
+	client: Client,
 	site_id: number,
 	content_type_id: number,
 	content_data_id: number,
-	token: string,
 	_fields?: string[],
 ) => {
+	const token = await client.createAccessToken();
 	const endpoint =
 		`sites/${site_id}/contentTypes/${content_type_id}/data/${content_data_id}`;
-	const requestURL = new URL(baseURL + endpoint);
+	const requestURL = new URL(client.baseURL + endpoint);
 
 	const response = await fetch(requestURL, {
 		method: 'GET',

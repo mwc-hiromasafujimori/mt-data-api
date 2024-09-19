@@ -1,17 +1,10 @@
-import { uploadFile, type UploadFileBody } from './assets.ts';
 import { authentication } from './authentication.ts';
-import {
-	createContentData,
-	type CreateContentDataBody,
-	fetchSingleContentData,
-} from './contentData.ts';
 
 export class Client {
-	private clientId: string;
-	private baseURL: string;
-	private username: string;
-	private password: string;
-	private token: string = '';
+	readonly clientId: string;
+	readonly baseURL: string;
+	readonly username: string;
+	readonly password: string;
 
 	/**
 	 * @param clientId なんでもいい
@@ -32,44 +25,12 @@ export class Client {
 	}
 
 	createAccessToken = async () => {
-		const authRes = await authentication(
+		const authResult = await authentication(
 			this.baseURL,
 			this.clientId,
 			this.username,
 			this.password,
 		);
-		this.token = authRes.accessToken;
-	};
-
-	createContentData = async (
-		siteId: number,
-		contentTypeId: number,
-		body: CreateContentDataBody,
-	) => {
-		return await createContentData(
-			this.baseURL,
-			siteId,
-			contentTypeId,
-			this.token,
-			body,
-		);
-	};
-
-	fetchContentTypeData = async (
-		siteId: number,
-		contentTypeId: number,
-		contentDataId: number,
-	) => {
-		return await fetchSingleContentData(
-			this.baseURL,
-			siteId,
-			contentTypeId,
-			contentDataId,
-			this.token,
-		);
-	};
-
-	uploadFile = async (siteId: number, body: UploadFileBody) => {
-		return await uploadFile(this.baseURL, siteId, this.token, body);
+		return authResult.accessToken;
 	};
 }
