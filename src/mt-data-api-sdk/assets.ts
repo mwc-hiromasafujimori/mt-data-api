@@ -1,3 +1,4 @@
+import { Client } from './mod.ts';
 import { type MTDataApiError } from './utils/error.ts';
 import { authorizedHeader } from './utils/header.ts';
 
@@ -73,12 +74,12 @@ export type UploadFileBody = {
  * @throws 413 Upload file size is larger than CGIMaxUpload.
  */
 export const uploadFile = async (
-	baseURL: string,
+	client: Client,
 	site_id: number,
-	token: string,
 	body: UploadFileBody,
 	overwrite: boolean = false,
 ) => {
+	const token = await client.createAccessToken();
 	const endpoint = `assets/upload`;
 	const requestParameter = new URLSearchParams();
 	if (overwrite) {
@@ -86,7 +87,8 @@ export const uploadFile = async (
 	}
 
 	const requestURL = new URL(
-		baseURL + endpoint + (overwrite ? `?${requestParameter.toString()}` : ''),
+		client.baseURL + endpoint +
+			(overwrite ? `?${requestParameter.toString()}` : ''),
 	);
 	const requestBody = new FormData();
 	requestBody.set('site_id', `${site_id}`);
